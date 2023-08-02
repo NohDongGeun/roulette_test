@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <style></style>
+    <link rel="stylesheet" href="/assets/index-9e10ad9a.css">
+  </head>
+  <body>
+    <div class="app">
+      <div class="roulette">
+        <div class="wheel" id="wheel"></div>
+        <div class="pointer"></div>
+        <button id="spin" style="color: white;">start</button>
+      </div>
+
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <img id="prizeImg" src="" alt="Prize" style="width: 50%;" />
+          <button class="applyBtn" onclick="openFormModal()">신청하기</button>
+        </div>
+      </div>
+      <div id="formModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal_form_content">
+          <span class="close" onclick="closeFormModal()">&times;</span>
+          <div id="formContainer" landing="168853235013677" onlyform="1"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const prizes = [
+        'Prize_1',
+        'Prize_2',
+        'Prize_3',
+        'Prize_4',
+        'Prize_5',
+        'Prize_6',
+      ]
+
+      const prizeImages = [
+        'http://webimg.jestina.co.kr/UpData/jestina/event/201201_jWeek/roulette_product_03.png', // 스타벅스
+        'http://webimg.jestina.co.kr/UpData/jestina/event/201201_jWeek/roulette_product_01.png', //조엘
+        'http://webimg.jestina.co.kr/UpData/jestina/event/201201_jWeek/roulette_product_02.png', // 크리스피
+        'http://webimg.jestina.co.kr/UpData/jestina/event/201201_jWeek/roulette_product_06.png', // 더블 1000
+        'http://webimg.jestina.co.kr/UpData/jestina/event/201201_jWeek/roulette_product_04.png', // 더블 5000
+        'http://webimg.jestina.co.kr/UpData/jestina/event/201201_jWeek/roulette_product_05.png', // 더블 3000
+      ]
+
+      document.getElementById('spin').addEventListener('click', function () {
+        this.disabled = true
+
+        const selectedPrize = Math.floor(Math.random() * prizes.length)
+        const degreesPerPrize = 360 / prizes.length
+        const rotation = degreesPerPrize * selectedPrize + 360 * 3
+        const selectedImg = prizeImages[selectedPrize]
+
+        document.getElementById(
+          'wheel',
+        ).style.transform = `rotate(${rotation}deg)`
+
+        const modal = document.getElementById('myModal')
+        const span = document.getElementsByClassName('close')[0]
+
+        span.onclick = function () {
+          modal.style.display = 'none'
+        }
+
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = 'none'
+          }
+        }
+
+        function showModal(prizeImage) {
+          document.getElementById('prizeImg').src = prizeImage
+          modal.style.display = 'block'
+        }
+
+        setTimeout(() => {
+          showModal(selectedImg)
+          wheel.style.transition = 'none'
+          wheel.style.transform = 'rotate(0deg)'
+          void wheel.offsetWidth
+          wheel.style.transition = ''
+          document.getElementById('spin').disabled = false
+        }, 5000)
+      })
+    </script>
+    <script>
+      const modal = document.getElementById('myModal')
+      const formModal = document.getElementById('formModal')
+
+      const span = document.getElementsByClassName('close')[0]
+
+      span.onclick = function () {
+        modal.style.display = 'none'
+      }
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = 'none'
+        } else if (event.target == formModal) {
+          formModal.style.display = 'none'
+        }
+      }
+
+      function showModal(prizeImage) {
+        document.getElementById('prizeImg').src = prizeImage
+        modal.style.display = 'block'
+      }
+
+      function closeFormModal() {
+        formModal.style.display = 'none'
+        location.reload()
+      }
+    </script>
+
+    <script>
+      function openFormModal() {
+        modal.style.display = 'none'
+        const tag_obj_Element = document.querySelector(
+          '#formModal #formContainer',
+        )
+
+        const landing_key = tag_obj_Element.getAttribute('landing')
+        const onlyform_use = tag_obj_Element.getAttribute('onlyform')
+        const group_string = tag_obj_Element.getAttribute('g')
+
+        let Frame_script_jquery_Element
+        Frame_script_jquery_Element = document.createElement('script')
+        Frame_script_jquery_Element.setAttribute('type', 'text/javascript')
+        Frame_script_jquery_Element.setAttribute(
+          'src',
+          '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',
+        )
+        tag_obj_Element.appendChild(Frame_script_jquery_Element)
+
+        let Frame_script_resize_Element
+        Frame_script_resize_Element = document.createElement('script')
+        Frame_script_resize_Element.setAttribute('type', 'text/javascript')
+        Frame_script_resize_Element.setAttribute(
+          'src',
+          'https://' + landing_key + '.dbcart.net/js/iframeResizer.min.js',
+        )
+        tag_obj_Element.appendChild(Frame_script_resize_Element)
+
+        let onlyform_value = ''
+        if (onlyform_use) onlyform_value = '&onlyform=1'
+        let groups_value = ''
+        if (group_string) groups_value = '&g=' + group_string
+
+        let Frame_Element
+        Frame_Element = document.createElement('iframe')
+        Frame_Element.frameBorder = 0
+        Frame_Element.width = '100%'
+        Frame_Element.height = '500px'
+        Frame_Element.id = 'dbcartapi_frame_' + landing_key
+        Frame_Element.scrolling = 'no'
+        Frame_Element.setAttribute(
+          'src',
+          'https://' +
+            landing_key +
+            '.dbcart.net/?dbcartapi=1' +
+            onlyform_value +
+            groups_value,
+        )
+        Frame_Element.style.minWidth = '100%'
+        tag_obj_Element.appendChild(Frame_Element)
+
+        Frame_Element.onload = function (evt) {
+          if (evt.target.src != '') {
+            frame2_obj = document.getElementById(
+              'dbcartapi_frame_' + landing_key,
+            )
+            iFrameResize(
+              {
+                log: false,
+                inPageLinks: false,
+                onResized: function (messageData) {},
+              },
+              frame2_obj,
+            )
+          }
+        }
+
+        formModal.style.display = 'block'
+      }
+    </script>
+  </body>
+</html>
