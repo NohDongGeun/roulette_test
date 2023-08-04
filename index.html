@@ -19,13 +19,21 @@
         <div class="modal-content">
           <span class="close">&times;</span>
           <img id="prizeImg" src="" alt="Prize" style="width: 50%;" />
-          <button class="applyBtn" onclick="openFormModal()">신청하기</button>
+          <button class="applyBtn" onclick="scrollEvent()">신청하기</button>
         </div>
       </div>
-      <div id="formModal" class="modal">
+
+      <div id="formModal" class="form">
         <!-- Modal content -->
+        <div class="form_image">
+          <img
+            id="formImage"
+            src="http://keepfit.kr/img/delivery_step_02@2x.jpg"
+            alt=""
+          />
+        </div>
         <div class="modal_form_content">
-          <span class="close" onclick="closeFormModal()">&times;</span>
+          <!-- <span class="close" onclick="closeFormModal()">&times;</span> -->
           <div id="formContainer" landing="168853235013677" onlyform="1"></div>
         </div>
       </div>
@@ -52,7 +60,8 @@
 
       document.getElementById('spin').addEventListener('click', function () {
         this.disabled = true
-
+        const formModal = document.getElementById('formModal')
+        formModal.style.opacity = '0'
         const selectedPrize = Math.floor(Math.random() * prizes.length)
         const degreesPerPrize = 360 / prizes.length
         const rotation = degreesPerPrize * selectedPrize + 360 * 3
@@ -120,8 +129,16 @@
     </script>
 
     <script>
-      function openFormModal() {
+      function scrollEvent() {
         modal.style.display = 'none'
+        document
+          .getElementById('formImage')
+          .scrollIntoView({ behavior: 'smooth' })
+
+        setTimeout(openFormModal, 500)
+      }
+
+      function openFormModal() {
         const tag_obj_Element = document.querySelector(
           '#formModal #formContainer',
         )
@@ -187,7 +204,7 @@
           }
         }
 
-        formModal.style.display = 'block'
+        formModal.style.opacity = '1'
       }
     </script>
   </body>
